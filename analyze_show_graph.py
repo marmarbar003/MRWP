@@ -25,36 +25,11 @@ with open(file_path, 'r') as file:
         G.add_edge(node1 - 1, node2 - 1)
 
 # Visualize the graph
-# plt.figure(figsize=(8, 6))
-# nx.draw(G, with_labels=True, node_color='skyblue', edge_color='gray', node_size=500, font_size=5)
-# plt.show()
+plt.figure(figsize=(8, 6))
+nx.draw(G, with_labels=True, node_color='skyblue', edge_color='gray', node_size=500, font_size=5)
+plt.show()
 
-# Function to plot degree distribution and fit distributions
 
-def plot_degree_distribution(G):
-    degree_sequence = [d for n, d in G.degree()]
-    plt.hist(degree_sequence, bins=50, density=True, alpha=0.75, color='blue', label='Degree Distribution')
-
-    # Fit a normal distribution
-    mu, std = norm.fit(degree_sequence)
-    xmin, xmax = plt.xlim()
-    x = np.linspace(xmin, xmax, 5)
-    p = norm.pdf(x, mu, std)
-    plt.plot(x, p, 'k', linewidth=2, label='Normal fit')
-
-    # Fit a power-law distribution
-    a, loc, scale = powerlaw.fit(degree_sequence)
-    p = powerlaw.pdf(x, a, loc, scale)
-    plt.plot(x, p, 'r--', linewidth=2, label='Power-law fit')
-
-    plt.legend()
-    plt.xlabel('Degree')
-    plt.ylabel('Density')
-    plt.title('Degree Distribution')
-    plt.show()
-
-# Plot degree distribution for the graph
-#plot_degree_distribution(G)
 
 def analyze_graph_properties(G):
     print(f"Number of nodes: {G.number_of_nodes()}")
@@ -90,26 +65,4 @@ def analyze_graph_properties(G):
 # Analyze graph properties
 #analyze_graph_properties(G)
 
-def plot_degree_distribution_new(G):
-    degree_sequence = [d for n, d in G.degree()]
 
-    # Determine the range of degrees for proper x-axis scaling
-    min_degree = min(degree_sequence)
-    max_degree = max(degree_sequence)
-
-    plt.hist(degree_sequence, bins=range(min_degree, max_degree + 2), density=True, alpha=0.75, color='blue', label='Degree Distribution')  # Adjusted bins
-
-    # ... (normal and power-law fit calculations remain the same)
-
-    plt.xlim(min_degree, max_degree + 1)  # Set the x-axis limits
-    plt.xticks(range(min_degree, max_degree -10, 10))  # Adjust tick frequency as needed
-    
-    plt.legend()
-    plt.xlabel('Degree')
-    plt.ylabel('Density')
-    plt.title('Degree Distribution')
-    plt.show()
-
-
-# Plot degree distribution for the graph
-plot_degree_distribution_new(G)
