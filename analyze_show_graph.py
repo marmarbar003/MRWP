@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt  # Fix import of pyplot
 from scipy.stats import norm, powerlaw
 import numpy as np
 import community as community_louvain
-file_path = '/Users/RalfsArvids123/Documents/school/MRWP/group_project/socfb-A-anon.mtx'
-#file_path='socfb-Haverford76.mtx'
+#file_path = 'socfb-A-anon.mtx'
+file_path='socfb-Haverford76.mtx'
 # Initialize an empty graph
 G = nx.Graph()
 
@@ -25,9 +25,10 @@ with open(file_path, 'r') as file:
         G.add_edge(node1 - 1, node2 - 1)
 
 # Visualize the graph
-plt.figure(figsize=(8, 6))
-nx.draw(G, with_labels=True, node_color='skyblue', edge_color='gray', node_size=500, font_size=5)
-plt.show()
+def visualize(G):
+    plt.figure(figsize=(8, 6))
+    nx.draw(G, with_labels=True, node_color='skyblue', edge_color='gray', node_size=500, font_size=5)
+    plt.show()
 
 
 
@@ -65,4 +66,5 @@ def analyze_graph_properties(G):
 # Analyze graph properties
 #analyze_graph_properties(G)
 
-
+#visualize the graph
+visualize(G)

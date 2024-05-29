@@ -10,7 +10,7 @@ import networkx as nx
 import matplotlib.pyplot as plt  # Fix import of pyplot
 from scipy.stats import norm, powerlaw
 import numpy as np
-file_path = '/Users/RalfsArvids123/Documents/school/MRWP/group_project/socfb-A-anon.mtx'
+file_path = 'socfb-A-anon.mtx'
 #file_path='socfb-Haverford76.mtx'
 # Initialize an empty graph
 G = nx.Graph()
@@ -35,7 +35,45 @@ with open(file_path, 'r') as file:
 
 def plot_degree_distribution(G):
     degree_sequence = [d for n, d in G.degree()]
-    plt.hist(degree_sequence, bins=50, density=True, alpha=0.75, color='blue', label='Degree Distribution')
+    plt.hist(degree_sequence, bins=100, density=True, alpha=0.75, color='blue', label='Degree Distribution')
+    """
+    # Fit a normal distribution
+    mu, std = norm.fit(degree_sequence)
+    xmin, xmax = plt.xlim()
+    x = np.linspace(xmin, xmax, 5)
+    p = norm.pdf(x, mu, std)
+    plt.plot(x, p, 'k', linewidth=2, label='Normal fit')
+
+    # Fit a power-law distribution
+    a, loc, scale = powerlaw.fit(degree_sequence)
+    p = powerlaw.pdf(x, a, loc, scale)
+    plt.plot(x, p, 'r--', linewidth=2, label='Power-law fit')
+    """
+    plt.legend()
+    plt.xlabel('Degree')
+    plt.ylabel('Density')
+    plt.title('Degree Distribution')
+    plt.show()
+
+# Plot degree distribution for the graph
+#plot_degree_distribution(G)
+
+
+
+def plot_degree_distribution_counts_new(G, max_degree=1000):
+    degree_sequence = [d for n, d in G.degree()]
+    max_degree_to_display = max_degree
+
+    # Filter degrees exceeding the limit
+    filtered_degrees = [d for d in degree_sequence if d <= max_degree_to_display]
+
+    # Create bins and count occurrences in each bin
+    bins = range(1, max_degree_to_display + 2)  
+    counts, _ = np.histogram(filtered_degrees, bins=bins) 
+
+    # Plot the degree distribution with counts (no density=True)
+    plt.bar(bins[:-1], counts, width=1, alpha=0.75, color='blue', label='Degree Counts')
+    
 
     # Fit a normal distribution
     mu, std = norm.fit(degree_sequence)
@@ -49,11 +87,13 @@ def plot_degree_distribution(G):
     p = powerlaw.pdf(x, a, loc, scale)
     plt.plot(x, p, 'r--', linewidth=2, label='Power-law fit')
 
-    plt.legend()
+    # Set x-axis limits explicitly
+    plt.xlim(0, max_degree_to_display + 1)
+
     plt.xlabel('Degree')
-    plt.ylabel('Density')
-    plt.title('Degree Distribution')
+    plt.ylabel('Count') # Changed from Density to Count
+    plt.title(f'Degree Distribution Counts (up to {max_degree_to_display})')
     plt.show()
 
-# Plot degree distribution for the graph
-#plot_degree_distribution(G)
+# Plot the degree distribution with the first 1000 degrees
+plot_degree_distribution_counts_new(G, max_degree=80) 
