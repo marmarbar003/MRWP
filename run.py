@@ -2,9 +2,9 @@ import networkx as nx
 import matplotlib.pyplot as plt  # Fix import of pyplot
 from scipy.stats import norm, powerlaw
 import numpy as np
-
-file_path = '/Users/giamihuynh/Downloads/socfb-Haverford76/socfb-Haverford76.mtx'
-
+import community as community_louvain
+file_path = '/Users/RalfsArvids123/Documents/school/MRWP/group_project/socfb-A-anon.mtx'
+#file_path='socfb-Haverford76.mtx'
 # Initialize an empty graph
 G = nx.Graph()
 
@@ -30,6 +30,7 @@ with open(file_path, 'r') as file:
 # plt.show()
 
 # Function to plot degree distribution and fit distributions
+
 def plot_degree_distribution(G):
     degree_sequence = [d for n, d in G.degree()]
     plt.hist(degree_sequence, bins=50, density=True, alpha=0.75, color='blue', label='Degree Distribution')
@@ -37,7 +38,7 @@ def plot_degree_distribution(G):
     # Fit a normal distribution
     mu, std = norm.fit(degree_sequence)
     xmin, xmax = plt.xlim()
-    x = np.linspace(xmin, xmax, 100)
+    x = np.linspace(xmin, xmax, 5)
     p = norm.pdf(x, mu, std)
     plt.plot(x, p, 'k', linewidth=2, label='Normal fit')
 
@@ -53,7 +54,7 @@ def plot_degree_distribution(G):
     plt.show()
 
 # Plot degree distribution for the graph
-plot_degree_distribution(G)
+#plot_degree_distribution(G)
 
 def analyze_graph_properties(G):
     print(f"Number of nodes: {G.number_of_nodes()}")
@@ -69,5 +70,46 @@ def analyze_graph_properties(G):
     degree_centrality = nx.degree_centrality(G)
     print(f"Degree centrality (sample): {dict(list(degree_centrality.items())[:5])}")
 
+    print("\nAdditional Network Analysis:")
+    
+    # Connected components
+    num_connected_components = nx.number_connected_components(G)
+    largest_cc = max(nx.connected_components(G), key=len)
+    print(f"Number of connected components: {num_connected_components}")
+    print(f"Size of largest connected component: {len(largest_cc)}")
+
+    # Community detection (Louvain method)
+    partition = community_louvain.best_partition(G)  # Use the correct function from python-louvain
+    num_communities = len(set(partition.values()))
+    modularity = community_louvain.modularity(partition, G)
+    print(f"Number of communities (Louvain): {num_communities}")
+    print(f"Modularity (Louvain): {modularity}")
+
+
+
 # Analyze graph properties
-analyze_graph_properties(G)
+#analyze_graph_properties(G)
+
+def plot_degree_distribution_new(G):
+    degree_sequence = [d for n, d in G.degree()]
+
+    # Determine the range of degrees for proper x-axis scaling
+    min_degree = min(degree_sequence)
+    max_degree = max(degree_sequence)
+
+    plt.hist(degree_sequence, bins=range(min_degree, max_degree + 2), density=True, alpha=0.75, color='blue', label='Degree Distribution')  # Adjusted bins
+
+    # ... (normal and power-law fit calculations remain the same)
+
+    plt.xlim(min_degree, max_degree + 1)  # Set the x-axis limits
+    plt.xticks(range(min_degree, max_degree -10, 10))  # Adjust tick frequency as needed
+    
+    plt.legend()
+    plt.xlabel('Degree')
+    plt.ylabel('Density')
+    plt.title('Degree Distribution')
+    plt.show()
+
+
+# Plot degree distribution for the graph
+plot_degree_distribution_new(G)
