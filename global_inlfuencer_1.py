@@ -11,8 +11,8 @@ global influencer: connections to others with high connections
 """
 import networkx as nx
 
-file_path = 'socfb-A-anon.mtx'
-#file_path='socfb-Haverford76.mtx'
+# file_path = 'socfb-A-anon.mtx'
+file_path='socfb-Haverford76.mtx'
 # Initialize an empty graph
 G = nx.Graph()
 

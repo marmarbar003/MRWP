@@ -10,8 +10,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import community as community_louvain
 
-file_path = 'socfb-A-anon.mtx'
-#file_path='socfb-Haverford76.mtx'
+# file_path = 'socfb-A-anon.mtx'
+file_path='socfb-Haverford76.mtx'
 # Initialize an empty graph
 G = nx.Graph()
 
@@ -63,19 +63,15 @@ def analyze_and_find_communities(G):
     except nx.NetworkXError as e:
         print(f"Error calculating average shortest path length: {e}")
 
-    # Degree centrality
     degree_centrality = nx.degree_centrality(G)
     print(f"Degree centrality (sample): {dict(list(degree_centrality.items())[:5])}")
     
-    # Closeness centrality
     closeness_centrality = nx.closeness_centrality(G)
     print(f"Closeness centrality (sample): {dict(list(closeness_centrality.items())[:5])}")
     
-    # Betweenness centrality
     betweenness_centrality = nx.betweenness_centrality(G)
     print(f"Betweenness centrality (sample): {dict(list(betweenness_centrality.items())[:5])}")
     
-    # Eigenvector centrality
     eigenvector_centrality = nx.eigenvector_centrality(G, max_iter=1000)
     print(f"Eigenvector centrality (sample): {dict(list(eigenvector_centrality.items())[:5])}")
 
@@ -98,7 +94,6 @@ def analyze_and_find_communities(G):
     print("\nNodes with highest degree in each community:")
     for community, node in highest_degree_nodes.items():
         print(f"Community {community}: Node {node} with degree {G.degree[node]}")
-
 
 # Analyze graph properties and find communities
 analyze_and_find_communities(G)
