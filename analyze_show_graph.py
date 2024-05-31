@@ -1,8 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt  # Fix import of pyplot
-from scipy.stats import norm, powerlaw
-import numpy as np
 import community as community_louvain
+
 #file_path = 'socfb-A-anon.mtx'
 file_path='socfb-Haverford76.mtx'
 # Initialize an empty graph
@@ -30,8 +29,6 @@ def visualize(G):
     nx.draw(G, with_labels=True, node_color='skyblue', edge_color='gray', node_size=500, font_size=5)
     plt.show()
 
-
-
 def analyze_graph_properties(G):
     print(f"Number of nodes: {G.number_of_nodes()}")
     print(f"Number of edges: {G.number_of_edges()}")
@@ -43,8 +40,21 @@ def analyze_graph_properties(G):
     except nx.NetworkXError as e:
         print(f"Error calculating average shortest path length: {e}")
 
+    # Degree centrality
     degree_centrality = nx.degree_centrality(G)
     print(f"Degree centrality (sample): {dict(list(degree_centrality.items())[:5])}")
+    
+    # Closeness centrality
+    closeness_centrality = nx.closeness_centrality(G)
+    print(f"Closeness centrality (sample): {dict(list(closeness_centrality.items())[:5])}")
+    
+    # Betweenness centrality
+    betweenness_centrality = nx.betweenness_centrality(G)
+    print(f"Betweenness centrality (sample): {dict(list(betweenness_centrality.items())[:5])}")
+    
+    # Eigenvector centrality
+    eigenvector_centrality = nx.eigenvector_centrality(G, max_iter=1000)
+    print(f"Eigenvector centrality (sample): {dict(list(eigenvector_centrality.items())[:5])}")
 
     print("\nAdditional Network Analysis:")
     
@@ -61,10 +71,18 @@ def analyze_graph_properties(G):
     print(f"Number of communities (Louvain): {num_communities}")
     print(f"Modularity (Louvain): {modularity}")
 
-
-
 # Analyze graph properties
-#analyze_graph_properties(G)
+analyze_graph_properties(G)
 
-#visualize the graph
-visualize(G)
+num_nodes = G.number_of_nodes()
+avg_degree = sum(dict(G.degree()).values()) / num_nodes
+m = int(avg_degree / 2)
+
+# Create the BA graph
+BA_graph = nx.barabasi_albert_graph(num_nodes, m)
+
+
+
+# Analyze BA graph properties
+print("\nProperties of the Barabási–Albert (BA) graph:")
+analyze_graph_properties(BA_graph)

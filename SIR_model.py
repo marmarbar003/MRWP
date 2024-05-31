@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import random
 
 
-file_path = '/Users/RalfsArvids123/Documents/school/MRWP/group_project/socfb-A-anon.mtx'
+file_path = 'socfb-A-anon.mtx'
 #file_path='socfb-Haverford76.mtx'
 # Initialize an empty graph
 G = nx.Graph()
@@ -42,9 +42,16 @@ num_time_steps = 100
 # Find the node with the highest degree
 node_degrees = G.degree()  # Get the degrees of all nodes
 highest_degree_node = max(node_degrees, key=lambda x: x[1])[0]  # Find the node with max degree
+# Find nodes with degree 10
+degree_10_nodes = [node for node, degree in G.degree() if degree == 10]
 
+if not degree_10_nodes:
+    raise ValueError("No nodes with degree 10 found in the graph.")
+
+# Choose one node with degree 10 as the initial infected node
+initial_infected_nodes = [random.choice(degree_10_nodes)]
 # Initial conditions
-initial_infected_nodes = [highest_degree_node]  # Start with the highest degree node
+#initial_infected_nodes = [highest_degree_node]  # Start with the highest degree node
 
 # Initial conditions
 #initial_infected_nodes = [random.choice(list(G.nodes()))]  # Start with one random infected node
