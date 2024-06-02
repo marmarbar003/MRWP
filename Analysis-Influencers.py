@@ -133,6 +133,22 @@ for node, degree in highest_degree_nodes:
     print(f"Node : {node}, with degree {degree}")
 
 
+# Find nodes with the highest degree in each community
+def highest_degree_in_communities(G, partition):
+    communities = {}
+    for node, community in partition.items():
+        if community not in communities:
+            communities[community] = []
+        communities[community].append(node)
+    
+    highest_degree_nodes = {}
+    for community, nodes in communities.items():
+        highest_degree_node = max(nodes, key=lambda node: G.degree[node])
+        highest_degree_nodes[community] = highest_degree_node
+    
+    return highest_degree_nodes
+
+
 # Perform louvain partition CHECK IF CORRECT
 def partition(G, t):
     communities = {}
@@ -151,6 +167,11 @@ def partition(G, t):
     
     print(f"Number of communities (Louvain) {t}: {num_communities}")
     print(f"Modularity (Louvain): {modularity}")
+    
+    highest_degree_nodes = highest_degree_in_communities(G, partition)
+    print(f"\nKey Influencer (highest degree) in each community for {t}:")
+    for com, node in highest_degree_nodes.items():
+        print(f"Community {com}: Node {node} with degree {G.degree[node]}")
 
     return community_list
 
@@ -158,7 +179,4 @@ community_G = partition(G, "FB Network")
 
 community_BA = partition(BA_graph, "BA Network")
 
-### Key Influencer ###
 
-def key_influencer_f(graph, community):
-  print("fda")
