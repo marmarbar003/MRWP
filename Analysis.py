@@ -11,7 +11,7 @@ import community
 from community import best_partition
 
 #file_path = 'socfb-A-anon.mtx'
-file_path='socfb-Haverford76.mtx'
+file_path='Data/socfb-Haverford76.mtx'
 # Initialize an empty graph
 G = nx.Graph()
 
@@ -81,7 +81,7 @@ def analyze_graph_properties(G):
 
 
 # Analyze graph properties
-analyze_graph_properties(G)
+#analyze_graph_properties(G)
 
 num_nodes = G.number_of_nodes()
 avg_degree = sum(dict(G.degree()).values()) / num_nodes
@@ -89,7 +89,7 @@ m = int(avg_degree / 2)
 
 # Create the BA graph
 BA_graph = nx.barabasi_albert_graph(1446, 41, seed = 3 )
-analyze_graph_properties(BA_graph)
+#analyze_graph_properties(BA_graph)
 
 ### Assuming its based on degree cenrtality #####
 
@@ -181,4 +181,63 @@ community_G = partition(G, "FB Network")
 
 community_BA = partition(BA_graph, "BA Network")
 
+# Counts internal connects
+def inter_con(node, com):
+   c = 0
+   for n in com:
+        if BA_graph.has_edge(node,n):
+            c+=1
+    
+   return c
+
+
+
+def com_an (c, g, com_num ):
+    node_top_perc = {}
+    node_top_deg = {}
+    print(f"Community {com_num}:")
+    for i in c:
+        c_node = inter_con(i, c)
+        per = round(c_node/BA_graph.degree(i), 3)
+      #  print(f"Node {i} has {c_node} internally -> {per}")
+        node_top_perc[i] = per
+        node_top_deg[i] = g.degree(i)
+        
+    
+    sort_perc = sorted(node_top_perc.items(), key=lambda x: x[1], reverse = True)
+    sort_deg = sorted(node_top_deg.items(), key=lambda x: x[1], reverse = True)
+    
+    top_5_per = sort_perc[:5]
+    top_5_deg = sort_deg[:5]
+    print("Top 5 highest percentage:")
+    for node, perc in top_5_per:
+        print(f"Node {node}: {perc}")
+    
+    print("Top 5 highest degree:")
+    for node, perc in top_5_deg:
+        print(f"Node {node}: {node_top_perc[node]}")
+    
+    print("\n")
+    
+## FACEBOOK
+com_an(community_G[0], G, 0)
+com_an(community_G[1], G, 1)
+com_an(community_G[2], G, 2)
+com_an(community_G[3], G, 3)
+com_an(community_G[4], G, 4)
+com_an(community_G[5], G, 5)
+
+print("\n")
+print("####################################################################")
+print("\n")
+# BA MODEL    
+com_an(community_BA[0], BA_graph, 0)
+com_an(community_BA[1], BA_graph, 1)
+com_an(community_BA[2], BA_graph, 2)
+com_an(community_BA[3], BA_graph, 3)
+com_an(community_BA[4], BA_graph, 4)
+com_an(community_BA[5], BA_graph, 5)
+com_an(community_BA[6], BA_graph, 6)
+com_an(community_BA[7], BA_graph, 7)
+com_an(community_BA[8], BA_graph, 8)
 
