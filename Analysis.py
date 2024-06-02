@@ -191,7 +191,7 @@ def inter_con(node, com):
    return c
 
 
-
+# print top 5 percetnage and top 5 degree nodes with percentage
 def com_an (c, g, com_num ):
     node_top_perc = {}
     node_top_deg = {}
