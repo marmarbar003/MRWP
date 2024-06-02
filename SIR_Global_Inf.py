@@ -6,7 +6,7 @@ Created on Sun Jun  2 13:41:13 2024
 """
 import matplotlib.pyplot as plt
 import random
-from Analysis import global_inf_deg_BA,global_inf_deg_FB,G,BA_graph
+from Analysis import global_inf_deg_BA,global_inf_deg_FB,G,BA_graph,node_high_perc_BA, node_high_con_BA, node_high_perc_FB,node_high_con_FB
 
 
 
@@ -64,5 +64,13 @@ def sim(G, n, t):
     plt.legend()
     plt.show()
 
-sim(G,global_inf_deg_FB, "Facebook Network")
+
+# Key  BA
 sim(BA_graph,global_inf_deg_BA, "BA Network")
+sim(BA_graph, node_high_perc_BA, "BA Network")
+sim(BA_graph, node_high_con_BA, "BA Network")
+
+# Key Facebook
+sim(G,global_inf_deg_FB, "Facebook Network")
+sim(G, node_high_perc_FB, "Facebook Network")
+sim(G, node_high_con_FB, "Facebook Network")
