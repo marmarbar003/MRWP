@@ -8,7 +8,7 @@ Created on Sun Jun  2 12:02:21 2024
 import networkx as nx
 import matplotlib.pyplot as plt  # Fix import of pyplot
 import community
-
+from community import best_partition
 
 #file_path = 'socfb-A-anon.mtx'
 file_path='socfb-Haverford76.mtx'
@@ -89,7 +89,6 @@ m = int(avg_degree / 2)
 
 # Create the BA graph
 BA_graph = nx.barabasi_albert_graph(1446, 41, seed = 3 )
-print(len(BA_graph.nodes))
 analyze_graph_properties(BA_graph)
 
 ### Assuming its based on degree cenrtality #####
@@ -127,11 +126,14 @@ highest_degree_nodes = find_highest_degree_nodes(G, 5)
 for node, degree in highest_degree_nodes:
     print(f"Node : {node}, with degree {degree}")
     
+global_inf_deg_FB = 859
+    
 highest_degree_nodes = find_highest_degree_nodes(BA_graph, 10)
 print("BA-model highest degree nodes")
 for node, degree in highest_degree_nodes:
     print(f"Node : {node}, with degree {degree}")
 
+global_inf_deg_BA = 42
 
 # Find nodes with the highest degree in each community
 def highest_degree_in_communities(G, partition):
