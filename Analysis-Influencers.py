@@ -81,7 +81,7 @@ def analyze_graph_properties(G):
 
 
 # Analyze graph properties
-#analyze_graph_properties(G)
+analyze_graph_properties(G)
 
 num_nodes = G.number_of_nodes()
 avg_degree = sum(dict(G.degree()).values()) / num_nodes
@@ -90,7 +90,7 @@ m = int(avg_degree / 2)
 # Create the BA graph
 BA_graph = nx.barabasi_albert_graph(1446, 41, seed = 3 )
 print(len(BA_graph.nodes))
-#analyze_graph_properties(BA_graph)
+analyze_graph_properties(BA_graph)
 
 ### Assuming its based on degree cenrtality #####
 
@@ -111,15 +111,12 @@ Global_Inf_centrality(G)
 print("\nGlobal Influencers BA graph:")
 Global_Inf_centrality(BA_graph)
 
-
+# Highest degree nodes
 def find_highest_degree_nodes(G, num_nodes=5):
-    # Calculate degree of each node
     node_degrees = dict(G.degree())
 
-    # Sort nodes by degree in descending order
     sorted_nodes = sorted(node_degrees.items(), key=lambda x: x[1], reverse=True)
 
-    # Extract top nodes with the highest degree
     highest_degree_nodes = sorted_nodes[:num_nodes]
 
     return highest_degree_nodes
