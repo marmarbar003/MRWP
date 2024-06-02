@@ -81,15 +81,12 @@ def analyze_graph_properties(G):
 
 
 # Analyze graph properties
-#analyze_graph_properties(G)
+analyze_graph_properties(G)
 
-num_nodes = G.number_of_nodes()
-avg_degree = sum(dict(G.degree()).values()) / num_nodes
-m = int(avg_degree / 2)
 
 # Create the BA graph
-BA_graph = nx.barabasi_albert_graph(1446, 41, seed = 3 )
-#analyze_graph_properties(BA_graph)
+BA_graph = nx.barabasi_albert_graph(1446, 41, seed = 8)
+analyze_graph_properties(BA_graph)
 
 ### Assuming its based on degree cenrtality #####
 
@@ -133,7 +130,7 @@ print("BA-model highest degree nodes")
 for node, degree in highest_degree_nodes:
     print(f"Node : {node}, with degree {degree}")
 
-global_inf_deg_BA = 42
+global_inf_deg_BA = 44
 
 # Find nodes with the highest degree in each community
 def highest_degree_in_communities(G, partition):
@@ -195,6 +192,7 @@ def inter_con(node, com):
 def com_an (c, g, com_num ):
     node_top_perc = {}
     node_top_deg = {}
+    node_top_connect = {}
     print(f"Community {com_num}:")
     for i in c:
         c_node = inter_con(i, c)
@@ -202,19 +200,27 @@ def com_an (c, g, com_num ):
       #  print(f"Node {i} has {c_node} internally -> {per}")
         node_top_perc[i] = per
         node_top_deg[i] = g.degree(i)
+        node_top_connect[i] = c_node
         
     
     sort_perc = sorted(node_top_perc.items(), key=lambda x: x[1], reverse = True)
     sort_deg = sorted(node_top_deg.items(), key=lambda x: x[1], reverse = True)
+    sort_con = sorted(node_top_connect.items(), key=lambda x: x[1], reverse = True)
     
     top_5_per = sort_perc[:5]
     top_5_deg = sort_deg[:5]
+    top_5_con = sort_con[:5]
+    
+    print("Top 5 highest connections:")
+    for node, con in top_5_con:
+        print(f"Node {node} w/ {node_top_connect[node]}: {node_top_perc[node]}")
+    
     print("Top 5 highest percentage:")
     for node, perc in top_5_per:
         print(f"Node {node}: {perc}")
     
     print("Top 5 highest degree:")
-    for node, perc in top_5_deg:
+    for node, deg in top_5_deg:
         print(f"Node {node}: {node_top_perc[node]}")
     
     print("\n")
@@ -225,7 +231,7 @@ com_an(community_G[1], G, 1)
 com_an(community_G[2], G, 2)
 com_an(community_G[3], G, 3)
 com_an(community_G[4], G, 4)
-com_an(community_G[5], G, 5)
+
 
 print("\n")
 print("####################################################################")
@@ -241,3 +247,15 @@ com_an(community_BA[6], BA_graph, 6)
 com_an(community_BA[7], BA_graph, 7)
 com_an(community_BA[8], BA_graph, 8)
 
+
+# Important nodes Facebook
+node_high_perc_FB=  388 #0.551       
+node_high_con_FB = 42 #0.355
+
+# Important nodes  BA
+node_high_perc_BA =1441 #0.439
+node_high_con_BA = 48 # 0.241
+
+
+
+Hi
